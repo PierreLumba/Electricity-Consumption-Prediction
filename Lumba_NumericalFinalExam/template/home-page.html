@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOGOEnergy</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home-page.css') }}">
+</head>
+
+<body>
+    <div class="section">
+        <input type="checkbox" id="check">
+        <div class="navbar">
+            <div class="logo">
+                <h2>GOGO>EnergyForecast</h2>
+            </div>
+            <div class="bg">
+                <img src="\static\img\collage.jpg">
+            </div>
+            <label for="check">
+                <i class="fas fa-bars menu-btn"></i>
+                <i class="fas fa-times close-btn"></i>
+            </label>
+        </div>
+        <div class="container">
+            <div class="content">
+
+                <div class="article">
+                    <h1>About Section</h1>
+                    <p>Relevance: In the modern world where more devices are being used, energy consumption is higher than ever. This calls for a system to track and predict the consumption of one's household.
+                    </p>
+                    <p>Purpose: Predicting Electricity Consumption can help give people an idea on how much electricity they are consuming on the long term which can help them budget for future expenses. 
+                    </p>
+                    <p>Methods: The Website is built with HMTL, CSS, and JavaScript. The prediction system will utilize Multiple-Linear Regression in computing for the prediction.</p>
+
+                <div class="instruction">
+                    <h2>Instructions</h2>
+                    <p>Step 1: Enter all Independent Variables of the CSV File in a none-space, comma-separated format. Example: Temp,Price,Demand
+                    </p>
+                    <p>Step 2: Enter Dependent Variable found in the CSV File.
+                    </p>
+                    <p>Step 3: Select the CSV File.
+                    </p>
+                    <p>Step 4: Press the Start Button to view results.
+                    </p>
+                    <p>Note: Make sure all steps are followed to avoid errors
+                    </p>
+                </div>
+            </div> 
+            <div class="input">
+                <h3>inputs</h3>
+                <form action="/analyze_data" method="post" enctype="multipart/form-data" id="inputTexts">
+                    <div class="input-group">
+                        <input type="text" id="input-dependent" name="input-dependent" placeholder="Dependent Variable: 1 Y-variable" autocomplete="off" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="input-independent" name="input-independent" placeholder="Independent Variable/s: 1,2,3... X-variables" autocomplete="off" required>
+                    </div>
+                    <form id="import-form" action="/import_csv" method="post" enctype="multipart/form-data">
+                        <div class="import-group">
+                            <input type="text" id="import-csv" name="import_csv" placeholder="Sample File: Energy.csv" readonly >
+                            <label for="csv_file"></label>
+                            <input type="file" id="csv_file" id="csv_file" name="csv_file" style="display: none;" accept=".csv" required>
+                            <button type="button" id="import-button">Select File</button>
+                        </div>
+                    </form>
+                    <div class="buttons">
+                        <button id="clear-button">reset</button>
+                        <button type="submit" id="submit-button">start</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        document.getElementById('import-button').addEventListener('click', function() {
+            document.getElementById('csv_file').click();
+        });
+    
+        document.getElementById('csv_file').addEventListener('change', function() {
+            document.getElementById('import-csv').value = this.value.split(/(\\|\/)/g).pop();
+        });
+
+        // Ensure form submission doesn't interfere with file upload
+        document.getElementById('submit-button').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            document.forms[0].submit(); // Submit the first form (with input variables and CSV file)
+        });
+
+        document.getElementById('clear-button').addEventListener('click', function(event) {
+            document.getElementById('inputTexts').reset();
+        });
+    </script>
+</body>
+
+</html>

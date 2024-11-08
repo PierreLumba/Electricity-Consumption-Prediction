@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOGO>EnergyForecast</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='output-page.css') }}">
+</head>
+<body>
+    <div class="section">
+        <input type="checkbox" id="check">
+        <div class="navbar">
+            <div class="logo">
+                <h2>GOGO>EnergyForecast Results</h2>
+            </div>
+            <label for="check">
+                <i class="fas fa-bars menu-btn"></i>
+                <i class="fas fa-times close-btn"></i>
+            </label>
+        </div>
+
+        <div class="output">
+            {% if output %}
+            <div class="plotbox">
+                <h1 style="text-align: center;">Plotted Graphs</h1>
+                <div class="plot">
+                    {% for plot_url in output.plot_urls %}
+                    <img src="data:image/png;base64,{{ plot_url }}" alt="Plot">
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="outputbox">
+                <h1 style="text-align: left;">Outputs:</h1>
+                <div class="results">
+
+                        <p id="title">1. Predicted Future Values: </p>
+                        <p>{{ output.predictions }}</p>
+
+                        <p id="title">2. Standard Error of the Estimate: </p>
+                        <p>{{ output.stand_error }}</p>
+
+                        <p id="title">3. Correlation Coefficient: </p>
+                        <p>{{ output.correlation_coefficient }}</p>
+ 
+                        <p id="title">4. Verbal Description of Correlation Coefficient: </p>
+                        <p>{{ output.correlation_description }}</p>
+ 
+                        <p id="title">5. Best Fit Regression Line Equation: </p>
+                        <p>
+                        {% for i in range(output.equation.num_vars) %}
+                            {{ output.equation.coef[i] }} * {{ output.independent_vars[i] }} + 
+                        {% endfor %}
+                        {{ output.equation.intercept }}</p>
+                        
+                </div>
+            </div>
+                
+                
+                
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
